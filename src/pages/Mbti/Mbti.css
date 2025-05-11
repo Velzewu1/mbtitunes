@@ -1,0 +1,15 @@
+.mbti-page        { display:flex; flex-direction:column; align-items:center; color:#fff; }
+.mbti-card        { background:#111; padding:32px 24px; border-radius:12px; width:320px; text-align:center; }
+.mbti-type        { font-size:48px; font-weight:700; margin:12px 0 24px; }
+.axes .axis-line  { display:flex; align-items:center; margin:8px 0; font-size:14px; }
+.axis-line span   { width:24px; }
+.axis-line .bar   { flex:1; height:10px; background:#333; border-radius:5px; overflow:hidden; margin:0 4px; }
+.axis-line .fill  { height:100%; background:#1db954; }
+.buttons          { margin-top:24px; display:flex; flex-direction:column; gap:8px; }
+.buttons button,
+.buttons a        { background:#1db954; color:#fff; border:none; padding:8px; border-radius:6px; text-decoration:none; }
+.buttons button:hover,
+.buttons a:hover  { background:#17a34a; }
+.loader-wrapper   { display:flex; justify-content:center; align-items:center; height:60vh;}
+.loader           { width:48px; height:48px; border:6px solid #1db954; border-top-color:transparent; border-radius:50%; animation:spin 1s linear infinite; }
+@keyframes spin   { to{ transform:rotate(360deg); } }

@@ -4,14 +4,14 @@ import * as ROUTES from "../../constants/routes";
 import Footer from "../../components/Footer"
 import "./Registration.css";
 
-const CLIENT_ID = "6742a45a680a410e8e0e0cda6297993c";
+const CLIENT_ID = "f8c7889eef0c4aa08b9aaffe72365873";
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN = window.location.origin;
-const SPACE_DELIMITER = "%20";
+const REDIRECT_URL_AFTER_LOGIN = "https://127.0.0.1:5173/callback";
+const RESPONSE_TYPE = "code"; 
 const SCOPES = [
   "playlist-read-private",
 ];
-const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
+const SCOPES_URL_PARAM = SCOPES.join(" ");
 
 const getReturnedParamsFromSpotifyAuth = (hash) => {
   const stringAfterHash = hash.substring(1);
@@ -35,12 +35,13 @@ const Registration = () => {
       localStorage.setItem("accessToken", access_token);
       localStorage.setItem("tokenType", token_type);
       localStorage.setItem("expiresIn", expires_in);
+      console.log(window.location.origin)
       navigate(ROUTES.PLAYLISTS);
     }
   }, [navigate]);
 
   const handleLogin = () => {
-    window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
+    window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URL_AFTER_LOGIN)}&scope=${SCOPES_URL_PARAM}&response_type=${RESPONSE_TYPE}&show_dialog=true`;
   };
 
   return (

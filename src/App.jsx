@@ -6,6 +6,9 @@ import Registration from "./pages/Registration/Registration";
 import Playlists from "./pages/Playlists/Playlists";
 import Outfit from "./pages/Outfit/Outfit";
 import Privacy from "./pages/Privacy/Privacy";
+import Mbti from "./pages/Mbti/Mbti";
+import AuthHandler  from "./pages/AuthHandler/AuthHandler.jsx";
+import AuthError  from "./pages/AuthHandler/AuthError.jsx";
 import "./App.css";
 
 
@@ -18,6 +21,9 @@ const App = () => {
         <Route path={ROUTES.PLAYLISTS} element={<Playlists />} />
         <Route path={ROUTES.OUTFIT} element={<Outfit />} />
         <Route path={ROUTES.PRIVACY} element={<Privacy />} />
+        <Route path={ROUTES.MBTI} element={<Mbti />} />
+        <Route path={ROUTES.AUTHHANDLER} element={<AuthHandler  />} />
+        <Route path={ROUTES.AUTHERROR} element={<AuthError  />} />
       </Routes>
     </Router>
     <Analytics></Analytics>
