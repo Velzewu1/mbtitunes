@@ -4,7 +4,7 @@ import * as ROUTES from "../../constants/routes";
 import Footer from "../../components/Footer"
 import "./Registration.css";
 
-const CLIENT_ID = "6742a45a680a410e8e0e0cda6297993c";
+const CLIENT_ID = "f8c7889eef0c4aa08b9aaffe72365873";
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
 const REDIRECT_URL_AFTER_LOGIN = window.location.origin;
 const SPACE_DELIMITER = "%20";
