@@ -1,69 +1,50 @@
-import React, { useEffect } from "react";
+// src/pages/Registration/Registration.jsx
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
-import Footer from "../../components/Footer"
+import Footer from "../../components/Footer";
 import "./Registration.css";
+import {
+  generateCodeVerifier,
+  generateCodeChallenge
+} from "../../utils/pkce";
 
-const CLIENT_ID = "f8c7889eef0c4aa08b9aaffe72365873";
-const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN = "https://127.0.0.1:5173/callback";
-const RESPONSE_TYPE = "code"; 
-const SCOPES = [
-  "playlist-read-private",
-];
-const SCOPES_URL_PARAM = SCOPES.join(" ");
-
-const getReturnedParamsFromSpotifyAuth = (hash) => {
-  const stringAfterHash = hash.substring(1);
-  const paramsInUrl = stringAfterHash.split("&");
-  const paramsSplitUp = paramsInUrl.reduce((acc, currentValue) => {
-    const [key, value] = currentValue.split("=");
-    acc[key] = value;
-    return acc;
-  }, {});
-  return paramsSplitUp;
-};
+const CLIENT_ID    = "f8c7889eef0c4aa08b9aaffe72365873";
+const REDIRECT_URI = "https://127.0.0.1:5173/callback";
+const SCOPES       = ["playlist-read-private"];
 
 const Registration = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (window.location.hash) {
-      const { access_token, expires_in, token_type } =
-        getReturnedParamsFromSpotifyAuth(window.location.hash);
-      localStorage.clear();
-      localStorage.setItem("accessToken", access_token);
-      localStorage.setItem("tokenType", token_type);
-      localStorage.setItem("expiresIn", expires_in);
-      console.log(window.location.origin)
-      navigate(ROUTES.PLAYLISTS);
-    }
-  }, [navigate]);
+  const handleLogin = async () => {
+    // 1️⃣ Генерируем PKCE verifier & challenge
+    const verifier = generateCodeVerifier();
+    localStorage.setItem("pkce_verifier", verifier);
+    const challenge = await generateCodeChallenge(verifier);
 
-  const handleLogin = () => {
-    window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URL_AFTER_LOGIN)}&scope=${SCOPES_URL_PARAM}&response_type=${RESPONSE_TYPE}&show_dialog=true`;
+    // 2️⃣ Составляем URL Spotify
+    const url = new URL("https://accounts.spotify.com/authorize");
+    url.searchParams.set("client_id",             CLIENT_ID);
+    url.searchParams.set("response_type",         "code");
+    url.searchParams.set("redirect_uri",          REDIRECT_URI);
+    url.searchParams.set("scope",                 SCOPES.join(" "));
+    url.searchParams.set("code_challenge_method", "S256");
+    url.searchParams.set("code_challenge",        challenge);
+    url.searchParams.set("show_dialog",           "true");
+
+    window.location.href = url.toString();
   };
 
   return (
     <div className="registration-wrapper">
-      {/* Украшения */}
-      <img src="/resources/img/register/vest.png" className="deco vest" alt="vest" />
-      <img src="/resources/img/register/acics.png" className="deco acics" alt="acics" />
-      <img src="/resources/img/register/jeans.png" className="deco jeans" alt="jeans" />
-      <img src="/resources/img/register/hoodie.png" className="deco hoodie" alt="hoodie" />
-      <img src="/resources/img/register/shirt.png" className="deco shirt" alt="shirt" />
-      <img src="/resources/img/register/brace.png" className="deco brace" alt="brace" />
-
-      {/* Контент */}
+      {/* …декор… */}
       <div className="registration-container">
         <h1>YOUR <br /> SPOTIFY <br /> OUTFIT</h1>
-        <p>Find out what your Spotify outfit looks like based on your music taste.</p>
-
+        <p>Secure PKCE Authorization Code flow.</p>
         <button className="spotify-button" onClick={handleLogin}>
           <img src="/resources/img/spotifylogo.png" alt="Spotify" />
           Connect Spotify
         </button>
-
         <p className="note">ℹ️ Make sure you're not in incognito</p>
       </div>
       <Footer />

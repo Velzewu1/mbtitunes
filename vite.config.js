@@ -16,4 +16,12 @@ export default defineConfig({
     port: 5173,
     https: true
   },
+  proxy: {
+      // proxy /api/exchange → Netlify function or local server
+      "/api": {
+        target: "http://localhost:8888",
+        changeOrigin: true,
+        secure: false
+      }
+    }
 })
