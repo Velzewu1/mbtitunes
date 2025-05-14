@@ -4,8 +4,8 @@ export default async function handler(req, res) {
   const body = new URLSearchParams({
     grant_type:    "authorization_code",
     code,
-    redirect_uri:  process.env.VITE_REDIRECT_URI,
-    client_id:     process.env.VITE_SPOTIFY_CLIENT_ID,
+    redirect_uri:  process.env.SPOTIFY_REDIRECT_URI,
+    client_id:     process.env.SPOTIFY_CLIENT_ID,
     code_verifier: verifier,
   });
 

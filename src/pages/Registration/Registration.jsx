@@ -9,8 +9,8 @@ import {
   generateCodeChallenge
 } from "../../utils/pkce";
 
-const CLIENT_ID    = "f8c7889eef0c4aa08b9aaffe72365873";
-const REDIRECT_URI = "https://127.0.0.1:5173/callback";
+const CLIENT_ID    = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
 const SCOPES       = ["playlist-read-private"];
 
 const Registration = () => {
